@@ -20,6 +20,10 @@ export default function TodoWrapper() {
 		);
 	};
 
+	const deletedTodo = (id) => {
+		setTodos(todos.filter((todo) => todo.id !== id));
+	};
+
 	return (
 		<div className="bg-black p-5 rounded-lg w-full">
 			<TodoForm addTodo={addTodo} />
@@ -29,6 +33,7 @@ export default function TodoWrapper() {
 						key={todo.id}
 						todo={todo}
 						toggleComplete={toggleComplete}
+						deletedTodo={deletedTodo}
 					/>
 				);
 			})}
