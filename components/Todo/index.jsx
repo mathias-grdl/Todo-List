@@ -1,7 +1,7 @@
 import { Trash2 } from "lucide-react";
 import { SquarePen } from "lucide-react";
 
-export default function Todo({ todo, toggleComplete, deletedTodo }) {
+export default function Todo({ todo, toggleComplete, deletedTodo, editTodo }) {
 	return (
 		<div className="bg-gray-100 my-5 rounded-lg">
 			<div className="p-3 flex justify-between items-center ">
@@ -13,8 +13,12 @@ export default function Todo({ todo, toggleComplete, deletedTodo }) {
 				>
 					{todo.task}
 				</span>
+
 				<div className="flex gap-x-2">
-					<SquarePen className="cursor-pointer" />
+					<SquarePen
+						className="cursor-pointer"
+						onClick={() => editTodo(todo.id)}
+					/>
 					<Trash2
 						className="cursor-pointer"
 						onClick={() => deletedTodo(todo.id)}
