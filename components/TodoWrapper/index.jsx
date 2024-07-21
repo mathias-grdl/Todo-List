@@ -12,11 +12,25 @@ export default function TodoWrapper() {
 		]);
 	};
 
+	const toggleComplete = (id) => {
+		setTodos(
+			todos.map((todo) =>
+				todo.id === id ? { ...todo, completed: !todo.completed } : todo
+			)
+		);
+	};
+
 	return (
 		<div className="bg-black p-5 rounded-lg w-full">
 			<TodoForm addTodo={addTodo} />
 			{todos.map((todo) => {
-				return <Todo key={todo.id} todo={todo} />;
+				return (
+					<Todo
+						key={todo.id}
+						todo={todo}
+						toggleComplete={toggleComplete}
+					/>
+				);
 			})}
 		</div>
 	);
