@@ -31,6 +31,7 @@ export default function Todo({
 					type="checkbox"
 					className="checkbox"
 					onClick={() => toggleComplete(todo.id)}
+					checked={todo.completed}
 				/>
 				{!todo.isEditing ? (
 					<span
