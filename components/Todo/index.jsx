@@ -30,7 +30,7 @@ export default function Todo({
 				<input
 					type="checkbox"
 					className="checkbox"
-					onClick={() => toggleComplete(todo.id)}
+					onChange={() => toggleComplete(todo.id)}
 					checked={todo.completed}
 				/>
 				{!todo.isEditing ? (
