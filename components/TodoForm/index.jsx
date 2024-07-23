@@ -20,7 +20,7 @@ export default function TodoForm({ addTodo }) {
 		<form onSubmit={handleSubmit}>
 			<div className="join w-full">
 				<input
-					className="input input-bordered join-item"
+					className="input input-bordered join-item w-full"
 					placeholder="New task"
 					onChange={handleChange}
 					value={task}

@@ -25,44 +25,52 @@ export default function Todo({
 	};
 
 	return (
-		<div className="bg-gray-100 my-5 rounded-lg">
-			{!todo.isEditing ? (
-				<div className="p-3 flex justify-between items-center">
+		<div className="bg-gray-100 my-5 rounded-lg p-3 flex justify-between items-center">
+			<div className="flex items-center gap-2 flex-grow overflow-hidden mr-2">
+				<input
+					type="checkbox"
+					className="checkbox"
+					onClick={() => toggleComplete(todo.id)}
+				/>
+				{!todo.isEditing ? (
 					<span
-						className={`card-title overflow-hidden cursor-pointer ${
+						className={`card-title overflow-auto text-ellipsis whitespace-nowrap cursor-pointer flex-grow ${
 							todo.completed ? "line-through" : ""
 						}`}
 						onClick={() => toggleComplete(todo.id)}
 					>
 						{todo.task}
 					</span>
-					<div className="flex gap-x-2">
-						<SquarePen
-							className="cursor-pointer"
-							onClick={() => toggleEdit(todo.id)}
+				) : (
+					<form
+						onSubmit={handleEditSubmit}
+						className="p-3 flex justify-between items-center w-full"
+					>
+						<input
+							className="input input-bordered w-full rounded-r-none"
+							value={editTask}
+							onChange={handleEditChange}
+							placeholder="Update task"
 						/>
-						<Trash2
-							className="cursor-pointer"
-							onClick={() => deleteTodo(todo.id)}
-						/>
-					</div>
-				</div>
-			) : (
-				<form
-					onSubmit={handleEditSubmit}
-					className="p-3 flex justify-between items-center join"
-				>
-					<input
-						className="input input-bordered w-full rounded-r-none"
-						value={editTask}
-						onChange={handleEditChange}
-						placeholder="Update task"
-					/>
-					<button type="submit" className="btn rounded-r-full ml-2">
-						Update
-					</button>
-				</form>
-			)}
+						<button
+							type="submit"
+							className="btn rounded-r-full ml-2"
+						>
+							Update
+						</button>
+					</form>
+				)}
+			</div>
+			<div className="flex gap-x-2 flex-shrink-0">
+				<SquarePen
+					className="cursor-pointer"
+					onClick={() => toggleEdit(todo.id)}
+				/>
+				<Trash2
+					className="cursor-pointer"
+					onClick={() => deleteTodo(todo.id)}
+				/>
+			</div>
 		</div>
 	);
 }
