@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoForm from "../TodoForm";
 import Todo from "../Todo";
 
 export default function TodoWrapper() {
-	const [todos, setTodos] = useState([]);
+	const [todos, setTodos] = useState(() => {
+		const savedTodos = localStorage.getItem("todos");
+		return savedTodos ? JSON.parse(savedTodos) : [];
+	});
+
+	useEffect(() => {
+		localStorage.setItem("todos", JSON.stringify(todos));
+	}, [todos]);
 
 	const addTodo = (value) => {
 		setTodos((prevTodos) => [
