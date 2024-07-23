@@ -3,13 +3,21 @@ import TodoForm from "../TodoForm";
 import Todo from "../Todo";
 
 export default function TodoWrapper() {
-	const [todos, setTodos] = useState(() => {
-		const savedTodos = localStorage.getItem("todos");
-		return savedTodos ? JSON.parse(savedTodos) : [];
-	});
+	const [todos, setTodos] = useState([]);
 
 	useEffect(() => {
-		localStorage.setItem("todos", JSON.stringify(todos));
+		const storedTodos = localStorage.getItem("todos");
+		if (storedTodos) {
+			setTodos(JSON.parse(storedTodos));
+		}
+		return;
+	}, []);
+
+	useEffect(() => {
+		if (todos.length > 0) {
+			localStorage.setItem("todos", JSON.stringify(todos));
+		}
+		return;
 	}, [todos]);
 
 	const addTodo = (value) => {
