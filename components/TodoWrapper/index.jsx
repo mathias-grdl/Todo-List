@@ -41,7 +41,7 @@ export default function TodoWrapper() {
 	};
 
 	return (
-		<div className="bg-black p-5 rounded-lg w-full">
+		<div className="bg-green-200 p-5 rounded-lg w-full">
 			<TodoForm addTodo={addTodo} />
 			{todos.map((todo) => (
 				<Todo
