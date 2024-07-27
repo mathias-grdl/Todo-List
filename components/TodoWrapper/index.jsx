@@ -3,27 +3,43 @@ import TodoForm from "../TodoForm";
 import Todo from "../Todo";
 import SearchBar from "../SearchBar";
 import useDebounce from "@/hooks/useDebounce";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function TodoWrapper() {
-	const [todos, setTodos] = useLocalStorage("todos", []);
+	const [todos, setTodos] = useState([]);
 	const [isCompleted, setIsCompleted] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
 	const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
 	useEffect(() => {
-		const storedTodos = localStorage.getItem("todos");
-		if (storedTodos) {
-			setTodos(JSON.parse(storedTodos));
+		if (typeof window !== "undefined") {
+			const storedTodos = localStorage.getItem("todos");
+			if (storedTodos) {
+				try {
+					setTodos(JSON.parse(storedTodos));
+				} catch (error) {
+					console.error(
+						"Erreur lors de la lecture de localStorage:",
+						error
+					);
+					localStorage.removeItem("todos");
+				}
+			}
 		}
-		return;
 	}, []);
 
 	useEffect(() => {
-		if (todos.length > 0) {
-			localStorage.setItem("todos", JSON.stringify(todos));
+		if (typeof window !== "undefined") {
+			if (todos.length > 0) {
+				try {
+					localStorage.setItem("todos", JSON.stringify(todos));
+				} catch (error) {
+					console.error(
+						"Erreur lors de l'écriture dans localStorage:",
+						error
+					);
+				}
+			}
 		}
-		return;
 	}, [todos]);
 
 	const addTodo = useCallback((value) => {
