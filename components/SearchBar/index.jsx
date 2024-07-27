@@ -1,22 +1,34 @@
+import React, { useEffect, useCallback, memo } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import Toast from "@/utils/Toast";
+import { alphanumericSpaceRegex } from "@/utils/Regex";
 
-export default function SearchBar({
-	handleFilterChange,
-	setSearchTerm,
-	searchTerm,
-}) {
+const SearchBar = memo(({ handleFilterChange, setSearchTerm, searchTerm }) => {
 	const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
 	useEffect(() => {
 		setSearchTerm(debouncedSearchTerm);
 	}, [debouncedSearchTerm, setSearchTerm]);
 
-	const handleChange = (e) => {
-		const checked = e.target.checked;
-		handleFilterChange(checked);
-	};
+	const handleChange = useCallback(
+		(e) => {
+			handleFilterChange(e.target.checked);
+		},
+		[handleFilterChange]
+	);
+
+	const handleSearchChange = useCallback(
+		(e) => {
+			const input = e.target.value;
+			if (input === "" || alphanumericSpaceRegex.test(input)) {
+				setSearchTerm(input);
+			} else {
+				Toast("error", "Only letters and numbers are allowed.");
+			}
+		},
+		[setSearchTerm]
+	);
 
 	return (
 		<div className="p-5 rounded-lg w-full mb-3 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -25,7 +37,8 @@ export default function SearchBar({
 					type="text"
 					className="grow"
 					placeholder="Search"
-					onChange={(e) => setSearchTerm(e.target.value)}
+					onChange={handleSearchChange}
+					value={searchTerm}
 				/>
 				<Search opacity={0.5} />
 			</label>
@@ -39,4 +52,8 @@ export default function SearchBar({
 			</label>
 		</div>
 	);
-}
+});
+
+SearchBar.displayName = "SearchBar";
+
+export default SearchBar;

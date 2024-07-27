@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TodoForm from "../TodoForm";
 import Todo from "../Todo";
 import SearchBar from "../SearchBar";
 import useDebounce from "@/hooks/useDebounce";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function TodoWrapper() {
-	const [todos, setTodos] = useState([]);
+	const [todos, setTodos] = useLocalStorage("todos", []);
 	const [isCompleted, setIsCompleted] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
 	const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -25,36 +26,36 @@ export default function TodoWrapper() {
 		return;
 	}, [todos]);
 
-	const addTodo = (value) => {
+	const addTodo = useCallback((value) => {
 		setTodos((prevTodos) => [
 			...prevTodos,
 			{ id: Date.now(), task: value, completed: false, isEditing: false },
 		]);
-	};
+	}, []);
 
-	const toggleTodoProperty = (id, property) => {
+	const toggleTodoProperty = useCallback((id, property) => {
 		setTodos((prevTodos) =>
 			prevTodos.map((todo) =>
 				todo.id === id ? { ...todo, [property]: !todo[property] } : todo
 			)
 		);
-	};
+	}, []);
 
-	const deleteTodo = (id) => {
+	const deleteTodo = useCallback((id) => {
 		setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-	};
+	}, []);
 
-	const updateTodo = (task, id) => {
+	const updateTodo = useCallback((task, id) => {
 		setTodos((prevTodos) =>
 			prevTodos.map((todo) =>
 				todo.id === id ? { ...todo, task, isEditing: false } : todo
 			)
 		);
-	};
+	}, []);
 
-	const handleFilterChange = (e) => {
+	const handleFilterChange = useCallback((e) => {
 		setIsCompleted(e);
-	};
+	}, []);
 
 	const filteredTodos = todos
 		.filter((todo) =>

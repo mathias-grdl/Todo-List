@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
-export default function ToastError(text) {
-	toast.error(text, {
+export default function Toast(type, text) {
+	toast[type](text, {
 		position: "top-right",
 		autoClose: 5000,
 		hideProgressBar: false,

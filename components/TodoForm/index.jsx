@@ -1,20 +1,28 @@
-import ToastError from "@/utils/ToastError";
-import { useState } from "react";
+import React, { memo, useCallback, useState } from "react";
+import Toast from "@/utils/Toast";
+import { alphanumericSpaceRegex } from "@/utils/Regex";
 
-export default function TodoForm({ addTodo }) {
+const TodoForm = memo(({ addTodo }) => {
 	const [task, setTask] = useState("");
 
-	const handleChange = (e) => setTask(e.target.value);
+	const handleChange = useCallback((e) => {
+		setTask(e.target.value);
+	}, []);
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		if (task.trim()) {
-			addTodo(task);
-			setTask("");
-		} else {
-			ToastError("Task cannot be empty");
-		}
-	};
+	const handleSubmit = useCallback(
+		(e) => {
+			e.preventDefault();
+			if (task.trim() && alphanumericSpaceRegex.test(task)) {
+				addTodo(task);
+				setTask("");
+			} else if (!task.trim()) {
+				Toast("error", "Task cannot be empty");
+			} else {
+				Toast("error", "Only letters and numbers are allowed.");
+			}
+		},
+		[task, addTodo]
+	);
 
 	return (
 		<form onSubmit={handleSubmit} className="rounded-lg p-5">
@@ -31,4 +39,8 @@ export default function TodoForm({ addTodo }) {
 			</div>
 		</form>
 	);
-}
+});
+
+TodoForm.displayName = "TodoForm";
+
+export default TodoForm;
