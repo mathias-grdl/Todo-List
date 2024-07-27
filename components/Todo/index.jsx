@@ -25,7 +25,11 @@ export default function Todo({
 	};
 
 	return (
-		<div className="bg-gray-100 my-5 rounded-lg p-3 flex justify-between items-center">
+		<div
+			className={`bg-gray-100 border-2 my-5 rounded-lg p-3 flex justify-between items-center ${
+				todo.completed ? "border-red" : "border-green"
+			}`}
+		>
 			<div className="flex items-center gap-2 flex-grow overflow-hidden mr-2">
 				<input
 					type="checkbox"

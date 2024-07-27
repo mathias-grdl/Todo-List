@@ -17,7 +17,7 @@ export default function TodoForm({ addTodo }) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className="rounded-lg p-5">
 			<div className="join w-full">
 				<input
 					className="input input-bordered join-item w-full"
@@ -25,7 +25,7 @@ export default function TodoForm({ addTodo }) {
 					onChange={handleChange}
 					value={task}
 				/>
-				<button type="submit" className="btn join-item rounded-r-full">
+				<button type="submit" className="btn join-item rounded-r-lg">
 					Add Task
 				</button>
 			</div>
