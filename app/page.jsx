@@ -1,5 +1,4 @@
 "use client";
-import TodoForm from "@/components/TodoForm";
 import TodoWrapper from "@/components/TodoWrapper";
 
 export default function Home() {
