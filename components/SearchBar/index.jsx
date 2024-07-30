@@ -1,34 +1,28 @@
-import React, { useEffect, useCallback, memo } from "react";
+import { useEffect } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { Search } from "lucide-react";
-import Toast from "@/utils/Toast";
 import { alphanumericSpaceRegex } from "@/utils/Regex";
+import Toast from "@/utils/Toast";
 
-const SearchBar = memo(({ handleFilterChange, setSearchTerm, searchTerm }) => {
-	const debouncedSearchTerm = useDebounce(searchTerm, 500);
+const SearchBar = ({ handleFilterChange, setSearchTerm, searchTerm }) => {
+	const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
 	useEffect(() => {
 		setSearchTerm(debouncedSearchTerm);
 	}, [debouncedSearchTerm, setSearchTerm]);
 
-	const handleChange = useCallback(
-		(e) => {
-			handleFilterChange(e.target.checked);
-		},
-		[handleFilterChange]
-	);
+	const handleChange = (e) => {
+		handleFilterChange(e.target.checked);
+	};
 
-	const handleSearchChange = useCallback(
-		(e) => {
-			const input = e.target.value;
-			if (input === "" || alphanumericSpaceRegex.test(input)) {
-				setSearchTerm(input);
-			} else {
-				Toast("error", "Only letters and numbers are allowed.");
-			}
-		},
-		[setSearchTerm]
-	);
+	const handleSearchChange = (e) => {
+		const input = e.target.value;
+		if (input === "" || alphanumericSpaceRegex.test(input)) {
+			setSearchTerm(input);
+		} else {
+			Toast("error", "Only letters and numbers are allowed.");
+		}
+	};
 
 	return (
 		<div className="p-5 rounded-lg w-full mb-3 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -52,8 +46,6 @@ const SearchBar = memo(({ handleFilterChange, setSearchTerm, searchTerm }) => {
 			</label>
 		</div>
 	);
-});
-
-SearchBar.displayName = "SearchBar";
+};
 
 export default SearchBar;
